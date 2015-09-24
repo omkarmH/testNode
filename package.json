@@ -1,0 +1,24 @@
+{
+  "name": "Asana",
+  "version": "0.1.0",
+  "description": "Asana",
+  "main": "asana_service.js",
+  "scripts": {
+       "start": "node asana_service.js"
+  },
+  "repository": "",
+  "keywords": [
+    "node.js",
+    "eclipse",
+    "nodeclipse"
+  ],
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "express": "3.x.x",
+    "body-parser": "1.x.x",
+    "mongoose": "4.1.5",
+    "mongodb": "2.0.42",
+      }
+}
