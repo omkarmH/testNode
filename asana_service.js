@@ -16,9 +16,15 @@ var app = express();
 // Configuring Express App to make use of BodyParser's JSON parser to parse
 // JSON request body
 app.use(bodyParser.json());
-
+var db_name = "asana";
 var dbHost = 'mongodb://admin:w_aXU4nSt_6v@localhost:27017/asana';
-mongoose.connect(dbHost);
+//provide a sensible default for local development
+var mongodb_connection_string = 'mongodb://127.0.0.1:27017/' + db_name;
+//take advantage of openshift env vars when available:
+if(process.env.OPENSHIFT_MONGODB_DB_URL){
+  mongodb_connection_string = process.env.OPENSHIFT_MONGODB_DB_URL + db_name;
+}
+mongoose.connect(mongodb_connection_string);
 // Create a schema for Book
 var userSchema = mongoose.Schema({
   name: String,
@@ -50,10 +56,16 @@ var User = mongoose.model('user', userSchema);
 mongoose.connection;
 
 // Starting up the server on the port: 3300
-app.listen(80, function(){
-  console.log("Server up: http://localhost");
+//app.listen(3300, function(){
+ // console.log("Server up: http://localhost");
+//});
+////  openshift
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+ 
+app.listen(server_port, server_ip_address, function () {
+  console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
 });
-
 
 // Get all the users
 app.get('/user', function(req, res){
